@@ -1,0 +1,12 @@
+drivers_RILs_816ts_WW.txt
+1
+PARAM_ril222.p
+param_mod
+ril222_WW
+200000
+covfile1
+0.2
+0.25
+30
+1000
+0

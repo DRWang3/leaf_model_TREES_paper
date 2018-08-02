@@ -1,0 +1,12 @@
+drivers_RILs_816ts_with_drought.txt
+1
+PARAM_ril150_stoch_pred.p
+param_mod
+ril150_WL_pred_4
+200000
+covfile1
+0.2
+0.25
+30
+1000
+0

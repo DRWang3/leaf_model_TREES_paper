@@ -1,0 +1,12 @@
+drivers_RILs_816ts_WW.txt
+1
+PARAM_ril150_stoch_pred.p
+param_mod
+ril150_WW_pred_7
+200000
+covfile1
+0.2
+0.25
+30
+1000
+0

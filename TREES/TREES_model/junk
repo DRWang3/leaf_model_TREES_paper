@@ -1,0 +1,708 @@
+280d279
+< 	double CN;
+284c283,284
+< 	if (SLAscalar > 3.0)
+---
+> /*
+> 	if (SLAscalar > 2.0)
+286c286
+< 		SLAscalar = 3.0;
+---
+> 		SLAscalar = 2.0;
+291a292
+> */
+344c345
+<                 	rootNSC[j][k] = 0.5*treesParams.leafNSCscalar * fineRootBiomassCarbon[j][k];
+---
+>                 	rootNSC[j][k] = treesParams.leafNSCscalar * fineRootBiomassCarbon[j][k];
+346,348c347
+< 			CN = fineRootBiomassCarbon[j][k]/fineRootBiomassNitrogen[j][k];
+< 			rootMineralNitrogen[j][k] = 2.0*rootNSC[j][k]/CN;
+<                 	//rootMineralNitrogen[j][k] = 1.5/SLAscalar * fineRootBiomassNitrogen[j][k] * (1.0/treesParams.leafLifeSpan);;
+---
+>                 	rootMineralNitrogen[j][k] = 1.5/SLAscalar * fineRootBiomassNitrogen[j][k] * (1.0/treesParams.leafLifeSpan);;
+377,378c376,377
+<                 	coarseRootBiomassCarbon[j][k] = treesParams.Croot_coarse * treesParams.ar[j+3] * 0.16;
+<                 	coarseRootBiomassCarbon[j][k] += treesParams.Croot_coarse * treesParams.drax[j+3]/ totDepth * 0.04;
+---
+>                 	//coarseRootBiomassCarbon[j][k] = treesParams.Croot_coarse * 0.5*(treesParams.ar[j+3]+treesParams.drax[j+3]/totDepth) * 0.2;
+>                 	coarseRootBiomassCarbon[j][k] = treesParams.Croot_coarse * treesParams.ar[j+3] * 0.2;
+395c394
+<                 	rootNSC[j][k] = 0.5*treesParams.leafNSCscalar * coarseRootBiomassCarbon[j][k];
+---
+>                 	rootNSC[j][k] = treesParams.leafNSCscalar * coarseRootBiomassCarbon[j][k];
+397,399c396
+< 			CN = coarseRootBiomassCarbon[j][k]/coarseRootBiomassNitrogen[j][k];
+< 			rootMineralNitrogen[j][k] = 2.0*rootNSC[j][k]/CN;
+<                 	//rootMineralNitrogen[j][k] = 1.5/SLAscalar * coarseRootBiomassNitrogen[j][k] * (1.0/treesParams.leafLifeSpan);;
+---
+>                 	rootMineralNitrogen[j][k] = 1.5/SLAscalar * coarseRootBiomassNitrogen[j][k] * (1.0/treesParams.leafLifeSpan);;
+423a421
+>                 //humusCarbon[j] = treesParams.Csoil * (treesParams.ar[j+3]*treesParams.drax[j+3]/totDepth) - sumCl;
+424a423
+>                 //humusCarbon[j] = treesParams.Csoil * treesParams.drax[j+3]/totDepth - sumCl;
+438c437,438
+<         stemNSC[0] = 0.5*treesParams.leafNSCscalar*0.4 * liveStemCarbon[0];
+---
+>         //stemNSC[0] = treesParams.leafNSCscalar*0.4 * liveStemCarbon[0] + (1.0/treesParams.leafLifeSpan)*treesParams.lai/treesParams.SLA*10000.0;;
+>         stemNSC[0] = treesParams.leafNSCscalar*0.4 * liveStemCarbon[0];
+444c444
+<         leafNSC[0] = 0.5*leafBiomassCarbon[0]*treesParams.leafNSCscalar;
+---
+>         leafNSC[0] = leafBiomassCarbon[0]*treesParams.leafNSCscalar;
+450,452c450,452
+< 	CN = leafBiomassCarbon[0]/leafBiomassNitrogen[0];
+< 	leafStoredNitrogen[0] = 2.0*(leafNSC[0]+stemNSC[0])/CN;
+< 	//leafStoredNitrogen[0] = 5.0/treesParams.leafLifeSpan*leafBiomassNitrogen[0];
+---
+> //        leafRubiscoNitrogen[0] = (treesParams.leafLifeSpan-1.0)/treesParams.leafLifeSpan * leafN * treesParams.Nrubisco;
+> //        leafStoredNitrogen[0] = leafN-leafBiomassNitrogen[0];
+> 	leafStoredNitrogen[0] = 5.0/treesParams.leafLifeSpan*leafBiomassNitrogen[0];
+456a457,466
+> /*
+> 	else if (treesParams.ConductanceType == 3)
+> 	{
+> 		leafStoredNitrogen[0] *= 2.0;
+> 	}
+> 	else
+> 	{
+> 		leafStoredNitrogen[0] *= 1.1;
+> 	}
+> */
+867d876
+< 	double A_kg;			// (kgC ha-1)
+1075,1076d1083
+< 	A_kg = A / 4.6296; //convert from umol m-2 s-1 to kg ha-1
+< 
+1086c1093
+< 		if (getChloroplastStarch() > (-A_kg))
+---
+> 		if (getChloroplastStarch() > (-A))
+1088c1095
+< 			putChloroplastStarch(getChloroplastStarch()-(-A_kg));
+---
+> 			putChloroplastStarch(getChloroplastStarch()-(-A));
+1092,1093c1099,1100
+< 			Rd = Rd * getChloroplastStarch()/(-A_kg);
+< 			A = -getChloroplastStarch()*4.6296;
+---
+> 			Rd = Rd * getChloroplastStarch()/(-A);
+> 			A = -getChloroplastStarch();
+1153,1154c1160
+< 	double SRLperSLA = 10400.0; //(m kgC-1 root) (m2 kgC-1 leaf)-1
+< 	
+---
+> 	double SRLperSLA = 6500.0; //(m kgC-1 root) (m2 kgC-1 leaf)-1
+1161,1162c1167
+< //specific root length (m kgC-1 root)
+<         SRL = treesParams.SLA * SRLperSLA;
+---
+>         SRL = treesParams.SLA * SRLperSLA; //specific root length (m kgC-1 root)
+1203c1208
+< 	double SRLperSLA = 10400.0; //(m gC-1 root) (m2 kgC-1 leaf)
+---
+> 	double SRLperSLA = 6500.0; //(m gC-1 root) (m2 kgC-1 leaf)
+1246a1252,1253
+>                 //bsum += bval*rootArea[j][2]/totalRootArea;
+>                 //csum += cval*rootArea[j][2]/totalRootArea;
+1252a1260,1261
+>                         //bsum += bval*rootArea[j][k]/totalRootArea;
+>                         //csum += cval*rootArea[j][k]/totalRootArea;
+1262a1272,1273
+>                         //bsum += bval*rootArea[j][k]/totalRootArea;
+>                         //csum += cval*rootArea[j][k]/totalRootArea;
+1282,1289d1292
+< 	if (SLAscalar > 3.0)
+< 	{
+< 		SLAscalar = 3.0;
+< 	}
+< 	else if (SLAscalar < 1.0)
+< 	{
+< 		SLAscalar = 1.0;
+< 	}
+1291a1295
+>         //totalRootArea = computeRootArea(treesParams, j);
+1297a1302,1303
+>         //bsum += bval*rootArea[j][2]/totalRootArea;
+>         //csum += cval*rootArea[j][2]/totalRootArea;
+1307a1314,1315
+>                 //bsum += bval*rootArea[j][k]/totalRootArea;
+>                 //csum += cval*rootArea[j][k]/totalRootArea;
+1325a1334,1335
+>                 //bsum += bval*rootArea[j][k]/totalRootArea;
+>                 //csum += cval*rootArea[j][k]/totalRootArea;
+1327a1338,1339
+> 		//bval *= bfactor;
+> 		//cval *= cfactor;
+1395a1408,1413
+> /*
+> 		for (int k = 0; k < nFineRootOrders; k++)
+> 		{
+> 			rootCarbon += getRootCarbon(j, k);
+> 		}
+> */
+1568,1571d1585
+< 				if (rootNSC[j][k] < 0.000001)
+< 				{
+< 					rootNSC[j][k] = 0.000001;
+< 				}
+1851c1865
+< //computeNSCfluxes(kratio, kratio_vector)
+---
+> //computeNSCfluxes(kratio, kratioRoot)
+1860c1874
+< 				       	    double* kratio_vector)
+---
+> 				       	    double kratioRoot)
+1862,1863c1876
+< 	double C, flux, leafCfract, stemCfract, rootCfract; 
+< 	double rootCarbon, singleRootC, kratioRoot;
+---
+> 	double C, flux, leafCfract, stemCfract, rootCfract, rootCarbon, singleRootC;
+1886,1888c1899
+< 		kratioRoot = kratio_vector[j];
+< //nFineRootOrders
+< 		for (int k = 0; k < nFineRootOrders; k++)
+---
+> 		for (int k = 0; k < nRootOrders; k++)
+1890c1901
+< 			singleRootC = fineRootBiomassCarbon[j][k]+coarseRootBiomassCarbon[j][k];
+---
+> 			singleRootC = fineRootBiomassCarbon[j][k] + coarseRootBiomassCarbon[j][k];
+1899c1910
+< 				C = 0.08*rootNSC[j][k]*(singleRootC/rootCarbon)*kratioRoot;
+---
+> 				C = 0.08*rootNSC[j][k]*kratioRoot;
+1909,1929d1919
+< 		for (int k = nFineRootOrders; k < nRootOrders; k++)
+< 		{
+< 			singleRootC = fineRootBiomassCarbon[j][k]+coarseRootBiomassCarbon[j][k];
+< 			rootCfract = rootNSC[j][k]/singleRootC;
+< 			stemCfract = stemNSC[0]/liveStemCarbon[0];
+< 			if (stemCfract > rootCfract)
+< 			{
+< 				C = 0.08*stemNSC[0]*(singleRootC/rootCarbon)*kratioRoot;
+< 			}
+< 			else if (stemCfract < rootCfract)
+< 			{
+< 				C = 0.08*rootNSC[j][k]*(singleRootC/rootCarbon)*kratioRoot;
+< 			}
+< 			else
+< 			{
+< 				C = 0.0;
+< 			}
+< 			flux = C*(stemCfract - rootCfract);
+< 			rootNSC[j][k] += flux;
+< 			stemNSC[0] -= flux;
+< 		}
+1935c1925
+< //computeNfluxes(kratio, kratio_vector)
+---
+> //computeNfluxes(kratio, kratioRoot)
+1940c1930
+< 					  double* kratio_vector)
+---
+> 					  double kratioRoot)
+1942c1932
+< 	double C, flux, leafNfract, rootNfract, rootNitrogen, leafNstore, singleRootN, kratioRoot;
+---
+> 	double C, flux, leafNfract, rootNfract, rootNitrogen, leafNstore, singleRootN;
+1949d1938
+< 		kratioRoot = kratio_vector[j];
+1954c1943
+< 			if (leafNfract > 1.0*rootNfract)
+---
+> 			if (leafNfract > 2.0*rootNfract)
+1960c1949
+< 				C = 0.08*rootMineralNitrogen[j][k]*(singleRootN/rootNitrogen)*(1.0/(1.0/kratio + 1.0/kratioRoot));
+---
+> 				C = 0.08*rootMineralNitrogen[j][k]*(1.0/(1.0/kratio + 1.0/kratioRoot));
+1986c1975
+< 						 double kratio,
+---
+> 						 double RL,
+2003c1992,1994
+<         leafCfraction = leafCfraction*N_avail_rate_plant*kratio;
+---
+> //if NSC is low (nscRatio < 1.0) then reduce leaf carbon allocation
+> //if there is surplus NSC then raise the proportion of carbon allocated to leaf
+>         leafCfraction = leafCfraction*nscRatio*N_avail_rate_plant;
+2005c1996,1999
+< 
+---
+>         if (RL < 0.5)
+>         {
+>                 leafCfraction *= 2.0*RL;
+>         }
+2010c2004
+<         else if (leafCfraction > 0.40)
+---
+>         else if (leafCfraction > 1.00)
+2012c2006
+<                 leafCfraction = 0.40;
+---
+>                 leafCfraction = 1.00;
+2021c2015,2019
+< 	if (rgrowth > 0.99*nsc)
+---
+> 	if (0.90*nsc < rgrowth*nscRatio)
+> 	{
+> 		rgrowth = 0.9*nsc*nscRatio;
+> 	}
+> 	else
+2023c2021,2022
+< 		rgrowth = 0.99*nsc;
+---
+> 		//rgrowth *= (nscRatio*nscRatio);
+> 		rgrowth *= nscRatio;
+2027a2027
+>         //deltaLAI = leafCfraction*rgrowth*treesParams.SLA/10000.0 - treesParams.live_lai/unstressedLeafLifeSpan;
+2031c2031
+< 	if (kratio < 0.001)
+---
+> 	if (RL < 0.001)
+2033c2033
+< 		kratio = 0.001;
+---
+> 		RL = 0.001;
+2036c2036
+<         if (newc[1][1] > newc[3][1])
+---
+>         if (RL < 0.5 && newc[1][1] > newc[3][1])
+2038c2038
+<                 stressedLeafLifeSpan = kratio*unstressedLeafLifeSpan;
+---
+>                 stressedLeafLifeSpan = 2.0*RL*unstressedLeafLifeSpan;
+2063c2063
+< //updateLeafCarbonNitrogenPools()
+---
+> //updateLeafCarbonPool()
+2066,2070c2066
+< 						 	 double delta_lai,
+< 						 	 double RL,
+< 							 double N_neg_fract,
+< 							 double& N_neg_demand,
+< 							 double& N_pos_demand)
+---
+> 						 	 double delta_nsc)
+2072,2074c2068
+< 	double CN, minLeafC, baseLAI, nsc, delta_nsc, GRcost;
+< 	double total_N_demand, residual_N_demand, NfromStorage;
+< 	double N_avail_rate_plant = plantNstatus[0];
+---
+> 	double CN, minLeafC, baseLAI;
+2082,2084d2075
+< 	nsc = getLeafNSC();
+< 
+< 	delta_nsc = RL * delta_lai / treesParams.SLA * 10000.0 * (1.0/0.86);
+2090d2080
+< //For leaf we convert from the kg N m-2 leaf * lai of m2 m-2 * 10^4 m2 ha-1
+2093,2096c2083,2086
+< //this function adjusts the leaf C/N ratio as a function of available N
+< //allows C/N to vary from 35-146 (high-low N)
+< 		CN = 22.0/max(8.0,treesParams.SLA)*35.0 + (1.0-N_avail_rate_plant)*50.0;
+< 		if (delta_nsc > 0.50*nsc)
+---
+> //
+> //NOTE: nitrogen must be updated in computeLeafNdemand() 
+> //	because nitrogen is a limiting nutrient
+> 		if (getChloroplastSugar() >= 0.14*delta_nsc)
+2098c2088
+< 			delta_nsc = 0.50*nsc;
+---
+> 			putChloroplastSugar(getChloroplastSugar()-0.14*delta_nsc);
+2100,2116c2090,2102
+< 		GRcost = delta_nsc * 0.14;
+< 		total_N_demand = (delta_nsc-GRcost) / CN;
+< 		if (total_N_demand > 0.99*leafStoredNitrogen[0])
+< 		{
+< 			NfromStorage = 0.99*leafStoredNitrogen[0];
+<                         delta_lai = NfromStorage * CN * treesParams.SLA / 10000.0;
+< 			delta_nsc = delta_lai / treesParams.SLA * 10000.0 * (1.0/0.86);
+< 			GRcost = delta_nsc * 0.14;
+<                 }
+< 		residual_N_demand = total_N_demand;
+< 		N_neg_demand += N_neg_fract*residual_N_demand;
+< 		N_pos_demand += (1.0-N_neg_fract)*residual_N_demand;
+< 
+< 		leafBiomassCarbon[0] += (delta_nsc-GRcost);
+< 		leafNSC[0] -= delta_nsc;
+< 		leafBiomassNitrogen[0] += (delta_nsc-GRcost)/CN;
+< 		leafStoredNitrogen[0] -= (delta_nsc-GRcost)/CN;
+---
+> 		else if ((getChloroplastSugar()+getChloroplastStarch()) >= 0.14*delta_nsc)
+> 		{
+> 			putChloroplastStarch(getChloroplastStarch()-delta_nsc+getChloroplastSugar());
+> 			putChloroplastSugar(0.0);
+> 		}
+> 		else
+> 		{
+> 			delta_nsc = 0.5*delta_nsc + 0.5*(getChloroplastSugar()+getChloroplastStarch())/0.14;
+> 			putChloroplastSugar(getChloroplastSugar()*0.5);
+> 			putChloroplastStarch(getChloroplastStarch()*0.5);
+> 		}
+> 		leafBiomassCarbon[0] += 0.86*delta_nsc;
+> 		leafNSC[0] -= 0.86*delta_nsc;
+2121d2106
+< 		CN = leafBiomassCarbon[0]/leafBiomassNitrogen[0];
+2128a2114
+> 		CN = leafBiomassCarbon[0]/leafBiomassNitrogen[0];
+2140,2170d2125
+< //computeLeafNdemand()
+< //determine how much nitrogen is needed to support leaf growth of delta_lai
+< //assume that leaf expansion rates require nitrogen to be taken from storage
+< //any residual nitrogen needed will have to be supplied from belowground
+< //residual used to compute nitrogen demand
+< //
+< void BiogeochemicalCycles::computeLeafNdemand(trees_params treesParams,
+< 						double& delta_lai,
+< 						double N_neg_fract,
+< 						double& N_neg_demand,
+< 						double& N_pos_demand)
+< {
+< 	double leafCN, total_N_demand, residual_N_demand, NfromStorage;
+< 	double N_avail_rate_plant = plantNstatus[0];
+< 
+< //this function adjusts the leaf C/N ratio as a function of available N
+< //allows C/N to vary from 35-146 (high-low N)
+< 	leafCN = 22.0/max(8.0,treesParams.SLA)*35.0 + (1.0-N_avail_rate_plant)*50.0;
+< 	total_N_demand = delta_lai / treesParams.SLA * 10000.0 / leafCN;
+< 	NfromStorage = total_N_demand * plantNstatus[0];
+< 	if (NfromStorage > 0.99*leafStoredNitrogen[0])
+< 	{
+< 		NfromStorage = 0.99*leafStoredNitrogen[0];
+< 		delta_lai = NfromStorage * leafCN * treesParams.SLA / 10000.0;
+< 	}
+< 	residual_N_demand = total_N_demand;
+< 	N_neg_demand += N_neg_fract*residual_N_demand;
+< 	N_pos_demand += (1.0-N_neg_fract)*residual_N_demand;
+< }
+< 
+< //
+2174d2128
+< 							 double kratio,
+2177,2180d2130
+< 							 double& stemAllocation,
+< 							 double N_neg_fract,
+< 							 double& N_neg_demand,
+< 							 double& N_pos_demand,
+2182d2131
+< 							 double t_canopy,
+2187,2214c2136,2137
+< 	double liveStemIncrement, deadStemIncrement, residueIncrement;
+< 	double tgrowth, CN, stemCincrement;
+< 
+< //increase the rate of live stem death linearly with temperature above 5 C until root warms to 25 C
+< //reduce root growth at temperatures higher than 25 C
+< 	tgrowth = 0.0;
+< 	if (t_canopy > 5.0)
+< 	{
+< 		tgrowth = (t_canopy-5.0)/20.0;
+< 	}
+< //Live stem wood mortality
+< 	CN = liveStemCarbon[0]/liveStemNitrogen[0];
+< 	liveStemIncrement = tgrowth*liveStemCarbon[0]/(5.0*lifeSpan);
+< 	liveStemCarbon[0] -= liveStemIncrement;
+< 	liveStemNitrogen[0] -= liveStemIncrement/CN;
+< 	
+< //Dead stem wood
+< 	deadStemIncrement = liveStemIncrement;
+< 	deadStemCarbon[0] += deadStemIncrement;
+< 	deadStemNitrogen[0] += deadStemIncrement/CN;
+< 
+< //Stem wood residue
+< 	CN = deadStemCarbon[0]/deadStemNitrogen[0];
+< 	residueIncrement = deadStemCarbon[0]*0.01/365.25/48.0;
+< 	stemResidueCarbon[0] += residueIncrement;
+< 	stemResidueNitrogen[0] += residueIncrement/CN;
+< 	deadStemCarbon[0] -= residueIncrement;
+< 	deadStemNitrogen[0] -= residueIncrement/CN;
+---
+> 	double liveStemIncrement, deadStemIncrement, stemAllocation, residueIncrement;
+> 	double CN;
+2216,2219c2139,2140
+< //increase the rate of growth linearly with temperature above 5 C until root warms to 25 C
+< //reduce root growth at temperatures higher than 25 C
+< 	tgrowth = 0.0;
+< 	if (t_canopy > 5.0)
+---
+> //when N availability is less than 50% then helt stem growth
+> 	if (N_avail_rate_plant > 0.5)
+2221,2231c2142
+< 		tgrowth = (t_canopy-5.0)/20.0;
+< 		if (tgrowth > 1.0)
+< 		{
+< 			tgrowth = 1.0/tgrowth;
+< 		}
+< 	}
+< //New stem growth
+< //when N availability is less than 50% then halt stem growth
+< 	if (N_avail_rate_plant > 0.5 && nscRatio > 1.0)
+< 	{
+< 		stemAllocation = 0.2 * (N_avail_rate_plant-0.5)/0.5 * kratio * tgrowth;
+---
+> 		stemAllocation = 0.2 * (N_avail_rate_plant-0.5)/0.5 * 0.86 * rgrowth;
+2237d2147
+< 	stemCincrement = stemAllocation*rgrowth;
+2240c2150
+< 	if (stemCincrement > 0.99*stemNSC[0])
+---
+> 	if (stemAllocation/0.86 > stemNSC[0])
+2242c2152
+< 		stemCincrement = 0.99*stemNSC[0];
+---
+> 		stemAllocation = 0.86*stemNSC[0];
+2244c2154
+< 	stemNSC[0] -= stemCincrement;
+---
+> 	stemNSC[0] -= stemAllocation/0.86;
+2246,2247c2156,2159
+< 	CN = 20.0 + (1.0-N_avail_rate_plant)*20.0;
+< 	if (CN < 20.0)
+---
+> //Live stem wood
+> 	liveStemIncrement = stemAllocation - stemAllocation/leafCfraction*(lai/lifeSpan)/SLA*10000.0;
+> 	CN = 200.0 + (1.0-N_avail_rate_plant)*200.0;
+> 	if (CN < 200.0)
+2249c2161
+< 		CN = 20.0;
+---
+> 		CN = 200.0;
+2251,2256c2163,2164
+< 	N_neg_demand += N_neg_fract*stemCincrement*0.86/CN;
+<         N_pos_demand += (1.0-N_neg_fract)*stemCincrement*0.86/CN;
+< 
+< 	liveStemCarbon[0] += 0.86*stemCincrement;
+< 	liveStemNitrogen[0] += 0.86*stemCincrement/CN;
+< 	leafStoredNitrogen[0] -= 0.86*stemCincrement/CN;
+---
+> 	liveStemCarbon[0] += liveStemIncrement;
+> 	liveStemNitrogen[0] += liveStemIncrement/CN;
+2262,2269c2170,2182
+< 	if (rgrowth > 0.0)
+<         {       
+<                 stemAllocation = stemCincrement/rgrowth;
+<         }
+< 	else
+< 	{
+< 		stemAllocation = 0.0;
+< 	}
+---
+> 
+> //Dead stem wood
+> 	deadStemIncrement = stemAllocation - liveStemIncrement;
+> 	CN = deadStemCarbon[0]/deadStemNitrogen[0];
+> 	deadStemCarbon[0] += deadStemIncrement;
+> 	deadStemNitrogen[0] += deadStemIncrement/CN;
+> 
+> //Stem wood residue
+> 	residueIncrement = deadStemCarbon[0]*0.01/365.25/48.0;
+> 	stemResidueCarbon[0] += residueIncrement;
+> 	stemResidueNitrogen[0] += residueIncrement/CN;
+> 	deadStemCarbon[0] -= residueIncrement;
+> 	deadStemNitrogen[0] -= residueIncrement/CN;
+2284,2286d2196
+< 							 double N_neg_fract,
+< 							 double& N_neg_demand,
+< 							 double& N_pos_demand,
+2298d2207
+< //assumption here is that plants with lower SLA have longer fine root lifespans
+2301,2308d2209
+< 	if (SLAscalar > 3.0)
+< 	{
+< 		SLAscalar = 3.0;
+< 	}
+< 	else if (SLAscalar < 1.0)
+< 	{
+< 		SLAscalar = 1.0;
+< 	}
+2311d2211
+< //sum of dimensionless root K values, each given by K / Ksat
+2329c2229
+< //set root lifespan for smallest root diameter to 80% of a year for SLA of 17.8 (22/SLA*0.65)
+---
+> //set root lifespan for smallest root diameter to 0.4 of a year for SLA of 17.8 (22/SLA*0.65)
+2331,2333c2231,2232
+< 		assert(rootLifeSpan > 0.000001);
+< //increase the rate of growth linearly with root temperature above 5 C until root warms to 25 C
+< //reduce root growth at temperatures higher than 25 C
+---
+> 		assert(rootLifeSpan > 0.0000001);
+> //increase the rate of growth linearly with root temperature above 5 C until root warms to 20 C
+2335c2234
+< 		if (tempSoil[j] > 5.0)
+---
+> 		if (tempSoil[j] >= 5.0)
+2337c2236
+< 			tgrowth = (tempSoil[j]-5.0)/20.0;
+---
+> 			tgrowth = (tempSoil[j]-5.0)/15.0;
+2340c2239
+< 				tgrowth = 1.0/tgrowth;
+---
+> 				tgrowth = 1.0;
+2344c2243
+< 		root_relative_growth = kratio_vector[j] / (kratio_sum+0.0000001);
+---
+> 		root_relative_growth = kratio_vector[j] / (kratio_sum+0.0001);
+2349c2248,2250
+< //compute root mortality
+---
+>                 	rootAllocation = N_avail_rate_plant*fineRootLow;
+>                         rootAllocation += (1.0-N_avail_rate_plant)*fineRootHigh;
+> 			rootAllocation *= root_relative_growth;
+2351c2252,2253
+< 			rootCincrement = tgrowth*fineRootBiomassCarbon[j][k]/(rootLifeSpan+0.000001);
+---
+> //compute root mortality
+> 			rootCincrement = fineRootBiomassCarbon[j][k]/(rootLifeSpan+0.000001);
+2360d2261
+< 
+2362,2366d2262
+< //rootAllocation is a weighting of optimal N and stress N allocation fractions
+<                 	rootAllocation = N_avail_rate_plant*fineRootLow;
+<                         rootAllocation += (1.0-N_avail_rate_plant)*fineRootHigh;
+< //rootAllocation is further weighted based on hydraulic stress
+< 			rootAllocation *= root_relative_growth;
+2368a2265
+> 			//CN = 70.0 + (1.0-N_avail_rate_plant)*50.0;
+2374c2271
+< 			rootCincrement = (1.0-leafCfraction-stemAllocation)*rgrowth*tgrowth*rootAllocation;
+---
+> 			rootCincrement = (1.0-leafCfraction-stemAllocation)*0.86*(rgrowth*tgrowth)*rootAllocation;
+2376c2273
+< 			if (rootCincrement > 0.99*rootNSC[j][k])
+---
+> 			if (rootCincrement/0.86 > rootNSC[j][k])
+2378c2275
+< 				rootCincrement = 0.99*rootNSC[j][k];
+---
+> 				rootCincrement = 0.86*rootNSC[j][k];
+2382d2278
+< cout << "rootCincrement/CN = " << rootCincrement/CN << endl;
+2383a2280
+> 				//residual *= min(1.0,leafStoredNitrogen[0]/leafBiomassNitrogen[0]/leafCfraction);
+2394,2398c2291,2293
+< 			rootNSC[j][k] -= rootCincrement;
+<                         fineRootBiomassCarbon[j][k] += 0.86*rootCincrement;
+<                         fineRootBiomassNitrogen[j][k] += 0.86*rootCincrement/CN;
+< 			N_neg_demand += 0.86*N_neg_fract*rootCincrement/CN;
+< 			N_pos_demand += 0.86*(1.0-N_neg_fract)*rootCincrement/CN;
+---
+> 			rootNSC[j][k] -= rootCincrement/0.86;
+>                         fineRootBiomassCarbon[j][k] += rootCincrement;
+>                         fineRootBiomassNitrogen[j][k] += rootCincrement/CN;
+2407a2303,2305
+>                         rootAllocation = N_avail_rate_plant*fineRootLow;
+>                         rootAllocation += (1.0-N_avail_rate_plant)*fineRootHigh;
+> 			rootAllocation *= treesParams.ar[j+3];
+2414c2312
+< 			rootCincrement = tgrowth*coarseRootBiomassCarbon[j][k]/(rootLifeSpan+0.000001);
+---
+> 			rootCincrement = coarseRootBiomassCarbon[j][k]/rootLifeSpan;
+2423,2429d2320
+< //rootAllocation is a weighting of optimal N and stress N allocation fractions
+<                         rootAllocation = N_avail_rate_plant*fineRootLow;
+<                         rootAllocation += (1.0-N_avail_rate_plant)*fineRootHigh;
+< //rootAllocation is further weighted based on hydraulic stress
+< 			rootAllocation *= root_relative_growth;
+< 
+< //compute new root growth
+2437,2438c2328,2329
+< 			rootCincrement = (1.0-leafCfraction-stemAllocation)*rgrowth*tgrowth*rootAllocation;
+< 			if (rootCincrement > 0.99*rootNSC[j][k])
+---
+> 			rootCincrement = (1.0-leafCfraction-stemAllocation)*0.86*rgrowth*rootAllocation;
+> 			if (rootCincrement/0.86 > rootNSC[j][k])
+2440c2331
+< 				rootCincrement = 0.99*rootNSC[j][k];
+---
+> 				rootCincrement = 0.86*rootNSC[j][k];
+2446,2451c2337,2340
+< 			rootNSC[j][k] -= rootCincrement;
+<                         coarseRootBiomassCarbon[j][k] += 0.86*rootCincrement;
+<                         coarseRootBiomassNitrogen[j][k] += 0.86*rootCincrement/CN;
+< 			rootMineralNitrogen[j][k] -= 0.86*rootCincrement/CN;
+< 			N_neg_demand += 0.86*N_neg_fract*rootCincrement/CN;
+< 			N_pos_demand += 0.86*(1.0-N_neg_fract)*rootCincrement/CN;
+---
+> 			rootNSC[j][k] -= rootCincrement/0.86;
+>                         coarseRootBiomassCarbon[j][k] += rootCincrement;
+>                         coarseRootBiomassNitrogen[j][k] += rootCincrement/CN;
+> 			rootMineralNitrogen[j][k] -= rootCincrement/CN;
+2692a2582,2627
+> //computeLeafNdemand()
+> //determine how much nitrogen is needed to support leaf growth of delta_lai
+> //assume that leaf expansion rates require nitrogen to be taken from storage
+> //any residual nitrogen needed will have to be supplied from belowground
+> //residual used to compute nitrogen demand
+> //
+> void BiogeochemicalCycles::computeLeafNdemand(trees_params treesParams,
+> 						double& delta_lai,
+> 						double N_neg_fract,
+> 						double& N_neg_demand,
+> 						double& N_pos_demand)
+> {
+> 	double leafCN, total_N_demand, residual_N_demand, NfromStorage;
+> 	double N_avail_rate_plant = plantNstatus[0];
+> 
+> //this function adjusts the leaf C/N ratio as a function of available N
+> //allows C/N to vary from 35-146 (high-low N)
+> 	leafCN = 22.0/max(8.0,treesParams.SLA)*35.0 + (1.0-N_avail_rate_plant)*50.0;
+> /*
+> 	if (leafCN < 35.0)
+> 	{
+> 		leafCN = 35.0;
+> 	}
+> */
+> 	total_N_demand = delta_lai / treesParams.SLA * 10000.0 / leafCN;
+> 	NfromStorage = total_N_demand * plantNstatus[0];
+> /*
+> 	if (NfromStorage >= total_N_demand)
+> 	{
+> 		NfromStorage = total_N_demand;
+> 	}
+> */
+> 	if (NfromStorage > 0.99*leafStoredNitrogen[0])
+> 	{
+> 		NfromStorage = 0.99*leafStoredNitrogen[0];
+> 		delta_lai = NfromStorage * leafCN * treesParams.SLA / 10000.0;
+> 	}
+> 	leafBiomassNitrogen[0] += NfromStorage;
+> 	leafStoredNitrogen[0] -= NfromStorage;
+> //	residual_N_demand = total_N_demand-NfromStorage;
+> 	residual_N_demand = total_N_demand;
+> 	N_neg_demand += N_neg_fract*residual_N_demand;
+> 	N_pos_demand += (1.0-N_neg_fract)*residual_N_demand;
+> }
+> 
+> //
+2728a2664
+> 	//passiveNitrogenDemand = 1.0 - plantNstatus[0];
+2730c2666
+< 	passiveNitrogenDemand = 1.0/(1.0+exp(10.0*(plantNstatus[0]-0.8)));
+---
+> 	passiveNitrogenDemand = 1.0/(1.0+exp(10.0*(plantNstatus[0]-0.5)));
+2764c2700
+< //convert rhizopshere flux from mmol m-2 s-1 units to m 30min-1 (note: actually m3 30 min-1 m-2)
+---
+> //convert rhizopshere flux from mmol m-2 s-1 units to m 30min-1 (note: actually m3 30 min-1 m=2)
+2832,2833c2768
+< 			//rootMineralNitrogen[j][k] += (1.0-leafToRootCratio)*UPp*10.0*rhizWaterVolume;
+< 			rootMineralNitrogen[j][k] += UPp*10.0*rhizWaterVolume;
+---
+> 			rootMineralNitrogen[j][k] += (1.0-leafToRootCratio)*UPp*10.0*rhizWaterVolume;
+2907,2908c2842
+< 			//rootMineralNitrogen[j][k] += (1.0-leafToRootCratio)*UPp*10.0*rhizWaterVolume;
+< 			rootMineralNitrogen[j][k] += UPp*10.0*rhizWaterVolume;
+---
+> 			rootMineralNitrogen[j][k] += (1.0-leafToRootCratio)*UPp*10.0*rhizWaterVolume;
+2967c2901
+< 	//leafStoredNitrogen[0] += leafToRootCratio*passiveUptake;
+---
+> 	leafStoredNitrogen[0] += leafToRootCratio*passiveUptake;
+3147a3082
+> 		//rootLifeSpan = 0.65*48.0*365.25*22.0/treesParams.SLA;
+3162a3098,3099
+> 		//AtoVbulk = 0.1 / depth / porosity / (1.0 - cumDist); 
+> 		//AtoVbulk = 0.1 / treesParams.ar[j+3] / porosity; 

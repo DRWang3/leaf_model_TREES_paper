@@ -1350,7 +1350,7 @@ double BiogeochemicalCycles::photosynthesis(trees_params treesParams,
 //At compensation point or lower, hold stomata open
         else
         {
-		if (getChloroplastStarch() > (-A_kg))
+		/*if (getChloroplastStarch() > (-A_kg))
 		{
 			putChloroplastStarch(getChloroplastStarch()-(-A_kg));
 		}
@@ -1359,7 +1359,7 @@ double BiogeochemicalCycles::photosynthesis(trees_params treesParams,
 			Rd = Rd * getChloroplastStarch()/(-A_kg);
 			A = -getChloroplastStarch()*4.6296;
 			putChloroplastStarch(0.0);
-		}
+		}*/
                 g = (-A)/(2.0*gammaStar);
                 out.g = g * (R * tk) / 1.0e6;
         }
@@ -5117,7 +5117,7 @@ void BiogeochemicalCycles::updateLeaf(int k,
                 
                 //if soil properties are well characterized, then denominator below set to porosity
                     //waterStat = thetaRoot/treesParams.porosity;
-                    waterStat = thetaRoot/0.32;
+                    waterStat = thetaRoot/0.35;
             		water_RER_coef = calcHydRER(waterStat);
 
             		deltaAreaL *= water_RER_coef;

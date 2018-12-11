@@ -1,0 +1,12 @@
+drivers/cc_d1_drivers_drought_validation.txt
+1
+PARAM_CC_base.p
+param_mod
+outputs/cc_d1_drought_valid_expt
+200000
+covfile1
+0.2
+0.25
+30
+1000
+0

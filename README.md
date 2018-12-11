@@ -9,4 +9,4 @@ Two folders are found in this repository:
 
 *   **get_leaf_parameters** contains scripts and a leaf area dataset to derive genotype-specific leaf growth parameters. A phenotyping pipeline may be found in Figure S1 of the paper. 
 
-*   **TREES** contains input files along with the updated TREES model used in our study. 
+*   **TREES** contains the updated model along with input files for the drought validation simulations and *in silico* population modeling done in our study. 

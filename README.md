@@ -2,7 +2,7 @@
 -------------
 This repository contains files associated with our study on genotype-informed process model parameters of leaf development in *Brassica rapa* using the biophysical process-based model, **Terrestrial Regional Ecosystem Exchange Simulator (TREES)**. 
 
-Diane R. Wang, Carmela R. Guadagno, Xiaowei Mao, D. Scott Mackay, Jonathan R. Pleban, Robert L. Baker, Cynthia Weinig, Jean-Luc Jannink, Brent E. Ewers. A framework for genomics-informed ecophysiological modeling in plants. *Journal of Experimental Botany,* in press
+Diane R. Wang, Carmela R. Guadagno, Xiaowei Mao, D. Scott Mackay, Jonathan R. Pleban, Robert L. Baker, Cynthia Weinig, Jean-Luc Jannink, Brent E. Ewers. A framework for genomics-informed ecophysiological modeling in plants. *Journal of Experimental Botany,* https://doi.org/10.1093/jxb/erz090
 
 
 Two folders are found in this repository:
